@@ -1,14 +1,14 @@
 module Capistrano
   module Wizard
     class DeployMaker
-      include Helpers::File
+      include Helpers::Template
 
       def initialize(options)
         @options = options
       end
 
       def generate
-        template "templates/deploy.rb.erb", "result/config/deploy.rb"
+        make_template "templates/deploy.rb.erb", "result/config/deploy.rb"
       end
     end
   end

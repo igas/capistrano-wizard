@@ -30,10 +30,15 @@ Run `cap-wizard` for interactive mode or pass arguments described below
 
 Grab your configs from `$cwd/result` after Capistrano Wizard finished work.
 
+## Tests
+
+Use `rake test` run tests
+
 ## Contributing
 
 1. Fork it ( http://github.com/igas/capistrano-wizard/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+3. Ensure all tests passed (`rake test`)
+4. Commit your changes (`git commit -am 'Add some feature'`)
+5. Push to the branch (`git push origin my-new-feature`)
+6. Create new Pull Request

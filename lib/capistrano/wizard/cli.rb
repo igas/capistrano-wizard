@@ -17,6 +17,7 @@ module Capistrano
         parse_main_info
         parse_ruby_manager
         parse_capistrano_plugins
+        parse_stages
         parse_common_options
 
         begin
@@ -43,21 +44,38 @@ module Capistrano
 
       private
 
-      def interactive_stages
-        stages = ask("Which stages do you want to use? Default: #{DEFAULT_STAGES.join(', ')}\n > ")
-        stages = if stages.empty?
-                   DEFAULT_STAGES.dup
-                 else
-                   stages.split(/[\s,]+/)
-                 end
+      def parse_stages
         options[:stages] = []
-        stages.each do |stage|
-          credentials = ''
-          until credentials =~ /\A[^@]+@[^@]+\z/
-            credentials = ask("Enter credentials for #{stage} in user@host.com format:\n > ")
+        opts.on("--stages [production,staging]", Array, "Set stages names") do |stgs|
+          if stgs
+            stgs.each do |stage|
+              options[:stages].push({ name: stage, username: nil, host: nil})
+            end
+          else
+            DEFAULT_STAGES.each do |stage|
+              options[:stages].push({ name: stage, username: nil, host: nil})
+            end
           end
-          username, host = credentials.split("@")
-          options[:stages].push({ name: stage, username: username, host: host})
+        end
+      end
+
+      def interactive_stages
+        if options[:stages].empty?
+          stages = ask("Which stages do you want to use? Default: #{DEFAULT_STAGES.join(', ')}\n > ")
+          stages = if stages.empty?
+                     DEFAULT_STAGES.dup
+                   else
+                     stages.split(/[\s,]+/)
+                   end
+          options[:stages] = []
+          stages.each do |stage|
+            credentials = ''
+            until credentials =~ /\A[^@]+@[^@]+\z/
+              credentials = ask("Enter credentials for #{stage} in user@host.com format:\n > ")
+            end
+            username, host = credentials.split("@")
+            options[:stages].push({ name: stage, username: username, host: host})
+          end
         end
       end
 
@@ -132,7 +150,7 @@ module Capistrano
       def parse_capistrano_plugins
         opts.on("--[no-]rails", "Add rails plugin") do |v|
           options[:rails] = v
-          options[:bundler] = v
+          options[:bundler] = !v
           plugins << :rails if v
         end
 
@@ -149,7 +167,7 @@ module Capistrano
           plugins << :rails
         end
 
-        if !options[:bundler] && ask?("Add bundler plugin? [Y/n]\n > ")
+        if !options.key?(:bundler) && ask?("Add bundler plugin? [Y/n]\n > ")
           options[:bundler] = true
           plugins << :bundler
         end

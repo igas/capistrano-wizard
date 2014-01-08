@@ -1,14 +1,14 @@
 module Capistrano
   module Wizard
     class CapfileMaker
-      include Helpers::File
+      include Helpers::Template
 
       def initialize(plugins)
         @plugins = plugins
       end
 
       def generate
-        template "templates/Capfile.erb", "result/Capfile"
+        make_template "templates/Capfile.erb", "result/Capfile"
       end
     end
   end
