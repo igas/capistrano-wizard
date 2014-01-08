@@ -32,7 +32,7 @@ Grab your configs from `$cwd/result` after Capistrano Wizard finished work.
 
 ## Tests
 
-Use `rake test` run tests
+Use `rake test` to run tests
 
 ## Contributing
 
