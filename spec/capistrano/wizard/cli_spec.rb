@@ -34,12 +34,21 @@ end
 
 describe Capistrano::Wizard::CLI do
   subject { Capistrano::Wizard::CLI.new }
-  let(:default_arguments) { ['--name', 'test_app', '--repo-url', 'git@github.com:user/repo.git', '--deploy-to', '~/www/app', '--skip-ruby-manager', '--rails', '--stages'] }
 
   before do
     FileUtils.rm_rf('/tmp/capistrano-wizard-test')
     Dir.mkdir('/tmp/capistrano-wizard-test')
     Dir.chdir('/tmp/capistrano-wizard-test')
+  let(:default_arguments) do
+    [
+      '--name', 'test_app',
+      '--repo-url', 'git@github.com:user/repo.git',
+      '--deploy-to', '~/www/app',
+      '--skip-ruby-manager',
+      '--rails',
+      '--stages'
+    ]
+  end
   end
 
   it 'prints note' do
