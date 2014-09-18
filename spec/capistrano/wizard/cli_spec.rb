@@ -35,10 +35,6 @@ end
 describe Capistrano::Wizard::CLI do
   subject { Capistrano::Wizard::CLI.new }
 
-  before do
-    FileUtils.rm_rf('/tmp/capistrano-wizard-test')
-    Dir.mkdir('/tmp/capistrano-wizard-test')
-    Dir.chdir('/tmp/capistrano-wizard-test')
   let(:default_arguments) do
     [
       '--name', 'test_app',
@@ -49,6 +45,11 @@ describe Capistrano::Wizard::CLI do
       '--stages'
     ]
   end
+
+  before do
+    FileUtils.rm_rf('/tmp/capistrano-wizard-test')
+    Dir.mkdir('/tmp/capistrano-wizard-test')
+    Dir.chdir('/tmp/capistrano-wizard-test')
   end
 
   it 'prints note' do
