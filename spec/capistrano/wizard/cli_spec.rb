@@ -2,7 +2,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', '..', 'lib'))
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'capistrano/wizard'
-require 'fileutils'
+require 'minitest/around/spec'
 
 def flag(set)
   ARGV.clear
@@ -46,10 +46,13 @@ describe Capistrano::Wizard::CLI do
     ]
   end
 
-  before do
-    FileUtils.rm_rf('/tmp/capistrano-wizard-test')
-    Dir.mkdir('/tmp/capistrano-wizard-test')
-    Dir.chdir('/tmp/capistrano-wizard-test')
+  around do |test|
+    Dir.mktmpdir do |dir|
+      @dir = dir
+      Dir.chdir(dir) do
+        test.call
+      end
+    end
   end
 
   it 'prints note' do
