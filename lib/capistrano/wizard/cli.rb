@@ -190,12 +190,31 @@ module Capistrano
       end
 
       def generate_notes(plugins)
-        notes = ["Don't forget to add this gems to Gemfile:", "gem 'capistrano'"]
-        notes << "gem 'capistrano-rvm'" if plugins.include?(:rvm)
-        notes << "gem 'capistrano-rbenv', '~> 2.0'" if plugins.include?(:rbenv)
-        notes << "gem 'capistrano-chruby', github: 'capistrano/chruby'" if plugins.include?(:chruby)
-        notes << "gem 'capistrano-bundler'" if plugins.include?(:bundler)
-        notes << "gem 'capistrano-rails', '~> 1.1'" if plugins.include?(:rails)
+        notes = [
+          "Don't forget to add this gems to Gemfile:",
+          "gem 'capistrano'"
+        ]
+
+        if plugins.include?(:rvm)
+          notes << "gem 'capistrano-rvm'"
+        end
+
+        if plugins.include?(:rbenv)
+          notes << "gem 'capistrano-rbenv', '~> 2.0'"
+        end
+
+        if plugins.include?(:chruby)
+          notes << "gem 'capistrano-chruby', github: 'capistrano/chruby'"
+        end
+
+        if plugins.include?(:bundler)
+          notes << "gem 'capistrano-bundler'"
+        end
+
+        if plugins.include?(:rails)
+          notes << "gem 'capistrano-rails', '~> 1.1'"
+        end
+
         "#{notes.join("\n")}\n"
       end
 
