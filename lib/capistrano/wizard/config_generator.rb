@@ -14,8 +14,22 @@ module Capistrano
       def generate
         FileUtils.mkdir_p 'result/config/deploy'
         CapfileMaker.new(@plugins).generate
-        DeployMaker.new(@options.select { |key| [:deploy_to, :name, :repo_url, :ruby_manager, :ruby_string].include?(key) }).generate
+        DeployMaker.new(deploy).generate
         StagesMaker.new(@options[:stages]).generate
+      end
+
+      private
+
+      def deploy
+        @options.select do |key|
+          [
+            :deploy_to,
+            :name,
+            :repo_url,
+            :ruby_manager,
+            :ruby_string
+          ].include?(key)
+        end
       end
     end
   end
